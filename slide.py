@@ -90,7 +90,6 @@ def isValidMove(blankx, blanky, dire):
     else:
         return True
 
-def start_game():
 
 if __name__ == '__main__':
     main()
