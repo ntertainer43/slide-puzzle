@@ -1,5 +1,6 @@
 import pygame, sys
 from pygame.locals import  *
+import random
 
 class Puzzle_box:
     def __init__(self, num, x, y):
@@ -16,9 +17,15 @@ class Puzzle_box:
         SURFACE.blit(textSurf, textRect)
         print( self.num , textRect.center)
 
+    def pos_update(self, last):
+        if self.position == (blankx, blanky):
+            self.position = last
+
+
+
 
 def main():
-    global SURFACE, FONT, TILECOLOR
+    global SURFACE, FONT, TILECOLOR, blankx, blanky, last
 
     pygame.init()
     FPSCLOCK = pygame.time.Clock()
@@ -37,6 +44,7 @@ def main():
            list_of_boxes.append(new_Box)
            num+=1
     blankx, blanky = 4,4
+    last = blankx, blanky
 
     while True:
         for event in pygame.event.get():
@@ -46,25 +54,28 @@ def main():
             if event.type == KEYUP:  #CHANGE THIS PART TO FIT YOUR CODE
                 if event.key in (K_LEFT, K_a) and isValidMove(blankx, blanky, "LEFT"):
                     blankx +=1
-                    list_of_boxes[(blanky-1)*4+blankx-1].position= (blankx-1, blanky)
+
+
                 elif event.key in (K_RIGHT, K_d) and isValidMove(blankx, blanky, 'RIGHT'):
                     blankx -=1
-                    list_of_boxes[(blanky-1)*4+blankx-1].position= (blankx +1, blanky)
+
 
                 elif event.key in (K_UP, K_w) and isValidMove(blankx, blanky,"UP"):
                     blanky +=1
-                    list_of_boxes[(blanky-1)*4+blankx-1].position= (blankx, blanky-1)
 
                 elif event.key in (K_DOWN,K_s) and isValidMove(blankx, blanky, "DOWN"):
                     blanky -=1
-                    list_of_boxes[(blanky-1)*4+blankx-1].position= (blankx, blanky+1)
+
+
 
         SURFACE.fill(BGCOLOR)
         for new_Box in list_of_boxes:
+            new_Box.pos_update(last)
             new_Box.display()
         pygame.display.update()
         print(blankx, blanky)
-        FPSCLOCK.tick(30)
+        last = (blankx, blanky)
+        FPSCLOCK.tick(15)
 
 
 def isValidMove(blankx, blanky, dire):
@@ -79,6 +90,7 @@ def isValidMove(blankx, blanky, dire):
     else:
         return True
 
+def start_game():
 
 if __name__ == '__main__':
     main()
