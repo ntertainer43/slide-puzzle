@@ -36,15 +36,24 @@ def main():
     BGCOLOR = (3, 54,73)
     TILECOLOR = (0, 204, 0)
     list_of_boxes = []
+    list_of_position= []
     for i in range (1,5):
         for j in range(1,5):
-           if num == 16:
-               break
-           new_Box = Puzzle_box(num, j,i)
-           list_of_boxes.append(new_Box)
-           num+=1
-    blankx, blanky = 4,4
+            list_of_position.append((j,i))
+            if num == 16:
+                break
+            new_Box = Puzzle_box(num, j,i)
+            list_of_boxes.append(new_Box)
+            num+=1
+    random.shuffle(list_of_position)
+    blankx, blanky = list_of_position[0]
     last = blankx, blanky
+
+    print(list_of_position)
+    for box in list_of_boxes:
+        box.position = list_of_position[num-1]
+        num -=1
+
 
     while True:
         for event in pygame.event.get():
